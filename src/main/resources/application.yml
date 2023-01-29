@@ -1,0 +1,41 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: com.libo
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/libo_220725?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: 123456
+      # 邮箱配置
+  mail:
+    host: smtp.163.com  # 发送邮件的服务器地址
+    username: xlei1812023@163.com # 登录163邮箱的账号
+    password: XTZMIJKGMWDXDVRI  # 开启 IMAP/SMTP服务 获得的授权码,而不是163邮箱的登录密码
+    default-encoding: UTF-8
+
+  redis:
+    host: localhost # 本地IP 或是 虚拟机IP
+    port: 6379
+    #    password: root
+    database: 0  # 默认使用 0号db
+  cache:
+    redis:
+      time-to-live: 1800000  # 设置缓存数据的过期时间，30分钟
+
+# Mybatis-plus配置
+mybatis-plus:
+  # 配置Mapper.xml映射文件
+  mapper-location: classpath*:/mapper/*Mapper.xml
+  # 配置Mabatis数据返回类型别名（默认别名是类名）
+  type-aliases-package: com.libo.entity
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    #    将带有下划线的表字段映射为驼峰格式的实体类属性
+    map-underscore-to-camel-case: true
+    #    开启MyBatisPlus的日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
