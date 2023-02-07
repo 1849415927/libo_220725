@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -34,7 +35,7 @@ public interface LuoJiaoyueService extends IService<LuoJiaoyue> {
      * @param
      * @return
      */
-    void myExport(HttpServletResponse response, HttpServletRequest request);
+    void myExport(LuoJiaoyue luoJiaoyue, HttpServletResponse response) throws IOException;
 
     /**
      * 通过Excel批量导入数据
@@ -50,6 +51,6 @@ public interface LuoJiaoyueService extends IService<LuoJiaoyue> {
      * @param
      * @return
      */
-    void downloadExcel(HttpServletResponse response, HttpServletRequest request);
+    void downloadExcel(HttpServletResponse response) throws IOException;
 
 }

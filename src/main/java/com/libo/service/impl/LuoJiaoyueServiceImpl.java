@@ -88,12 +88,12 @@ public class LuoJiaoyueServiceImpl extends ServiceImpl<LuoJiaoyueMapper, LuoJiao
      * @return
      */
     @Override
-    public void myExport(HttpServletResponse response, HttpServletRequest request) {
+    public void myExport(LuoJiaoyue luoJiaoyue, HttpServletResponse response) throws IOException {
         String fileName = "礼簙信息";
         String sheetName="礼簙信息";
         Page<LuoJiaoyue> page = new Page<>();
+        page.setCurrent(1);
         page.setSize(99999);
-        LuoJiaoyue luoJiaoyue = new LuoJiaoyue();
         List<LiboExcelExport> teacherExcelList = new ArrayList<>();
         List<LuoJiaoyue> records = luoJiaoyueService.selectAll(page, luoJiaoyue).getRecords();
         for (LuoJiaoyue record : records) {
@@ -111,7 +111,7 @@ public class LuoJiaoyueServiceImpl extends ServiceImpl<LuoJiaoyueMapper, LuoJiao
     }
 
     @Override
-    public void downloadExcel(HttpServletResponse response, HttpServletRequest request){
+    public void downloadExcel(HttpServletResponse response) throws IOException{
         String fileName = "礼簙信息模板";
         String sheetName="礼簙信息模板";
         List<LiboExcelExport> teacherExcelList = new ArrayList<>();

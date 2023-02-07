@@ -1,8 +1,8 @@
 package com.libo.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.libo.entity.LuoJiaoyue;
+import com.libo.enums.R;
 import com.libo.service.LuoJiaoyueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -49,8 +50,9 @@ public class LuoJiaoyueController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "分页列表查询")
-    public R<Page<LuoJiaoyue>> selectAll(Page<LuoJiaoyue> page, @RequestBody LuoJiaoyue luoJiaoyue) {
-        return R.ok(this.luoJiaoyueService.selectAll(page, luoJiaoyue));
+    public R selectAll(Page<LuoJiaoyue> page, @RequestBody LuoJiaoyue luoJiaoyue) {
+        Page<LuoJiaoyue> pages = this.luoJiaoyueService.selectAll(page, luoJiaoyue);
+        return R.ok().data("list", pages);
     }
 
     /**
@@ -61,8 +63,9 @@ public class LuoJiaoyueController {
      */
     @GetMapping("{id}")
     @ApiOperation(value = "通过主键查询单条数据")
-    public R<LuoJiaoyue> selectOne(@PathVariable Serializable id) {
-        return R.ok(this.luoJiaoyueService.getById(id));
+    public R selectOne(@PathVariable Serializable id) {
+        LuoJiaoyue byId = this.luoJiaoyueService.getById(id);
+        return R.ok().data("detail", byId);
     }
 
     /**
@@ -73,8 +76,13 @@ public class LuoJiaoyueController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "新增数据")
-    public R<Boolean> insert(@RequestBody LuoJiaoyue luoJiaoyue) {
-        return R.ok(this.luoJiaoyueService.save(luoJiaoyue));
+    public R insert(@RequestBody LuoJiaoyue luoJiaoyue) {
+        boolean save = this.luoJiaoyueService.save(luoJiaoyue);
+        if (save) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 
     /**
@@ -85,8 +93,13 @@ public class LuoJiaoyueController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "修改数据")
-    public R<Boolean> update(@RequestBody LuoJiaoyue luoJiaoyue) {
-        return R.ok(this.luoJiaoyueService.updateById(luoJiaoyue));
+    public R update(@RequestBody LuoJiaoyue luoJiaoyue) {
+        boolean updateById = this.luoJiaoyueService.updateById(luoJiaoyue);
+        if (updateById) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 
     /**
@@ -97,8 +110,13 @@ public class LuoJiaoyueController {
      */
     @DeleteMapping("/delete")
     @ApiOperation(value = "批量删除")
-    public R<Boolean> delete(@RequestParam("idList") List<Long> idList) {
-        return R.ok(this.luoJiaoyueService.removeByIds(idList));
+    public R delete(@RequestParam("idList") List<Long> idList) {
+        boolean removeByIds = this.luoJiaoyueService.removeByIds(idList);
+        if (removeByIds) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 
     /**
@@ -108,13 +126,9 @@ public class LuoJiaoyueController {
      * @return 是否成功
      */
     @ApiOperation(value = "导出并下载文件")
-    @GetMapping("/export_driver_excel")
-    public void exportEmployeeExcel(HttpServletResponse response, HttpServletRequest request) {
-        try {
-            luoJiaoyueService.myExport(response,request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @PostMapping("/export_driver_excel")
+    public void exportEmployeeExcel(@RequestBody LuoJiaoyue luoJiaoyue, HttpServletResponse response) throws IOException {
+        luoJiaoyueService.myExport(luoJiaoyue, response);
     }
 
     /**
@@ -126,7 +140,8 @@ public class LuoJiaoyueController {
     @ApiOperation(value = "批量导入")
     @PostMapping("/importData")
     public R importData(@RequestBody MultipartFile file) {
-        return R.ok(luoJiaoyueService.importData(file));
+        R data = luoJiaoyueService.importData(file);
+        return data;
     }
 
     /**
@@ -137,12 +152,8 @@ public class LuoJiaoyueController {
      */
     @ApiOperation(value = "excel模板下载")
     @RequestMapping(value = "/templateDownload", method = RequestMethod.GET)
-    public void downloadExcel(HttpServletResponse response, HttpServletRequest request) {
-        try {
-            luoJiaoyueService.downloadExcel(response,request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void downloadExcel(HttpServletResponse response) throws IOException{
+        luoJiaoyueService.downloadExcel(response);
     }
 
 }
