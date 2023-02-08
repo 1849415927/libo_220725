@@ -52,7 +52,7 @@ public class EasyExcelUtil {
     private static OutputStream getOutputStream(String fileName, HttpServletResponse response) throws Exception {
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setContentType("application/vnd.ms-excel");
-        response.setCharacterEncoding("utf8");
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
         response.addHeader("Access-Control-Expose-Headers", "Content-disposition");
 

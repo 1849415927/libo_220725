@@ -1,5 +1,6 @@
 package com.libo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import com.libo.common.BaseDataPO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -49,5 +51,13 @@ public class LuoJiaoyue extends BaseDataPO implements Serializable {
 
     @ApiModelProperty(value = "人员（任浩乾 · 罗娇月）")
     private String personnel;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "当前页")
+    private Integer current;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "每页显示数据条数")
+    private Integer size;
 
 }

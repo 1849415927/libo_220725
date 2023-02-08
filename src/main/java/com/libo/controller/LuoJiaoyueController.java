@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
@@ -44,15 +43,14 @@ public class LuoJiaoyueController {
     /**
      * 分页查询所有数据
      *
-     * @param page      分页对象
      * @param luoJiaoyue 查询实体
      * @return 所有数据
      */
     @PostMapping("/list")
     @ApiOperation(value = "分页列表查询")
-    public R selectAll(Page<LuoJiaoyue> page, @RequestBody LuoJiaoyue luoJiaoyue) {
-        Page<LuoJiaoyue> pages = this.luoJiaoyueService.selectAll(page, luoJiaoyue);
-        return R.ok().data("list", pages);
+    public R selectAll(@RequestBody LuoJiaoyue luoJiaoyue) {
+        Page<LuoJiaoyue> page = this.luoJiaoyueService.selectAll(luoJiaoyue);
+        return R.ok().data("list", page);
     }
 
     /**

@@ -23,11 +23,10 @@ public interface LuoJiaoyueService extends IService<LuoJiaoyue> {
     /**
      * 分页查询所有数据
      *
-     * @param page      分页对象
      * @param luoJiaoyue 查询实体
      * @return 所有数据
      */
-    Page<LuoJiaoyue> selectAll(Page<LuoJiaoyue> page, LuoJiaoyue luoJiaoyue);
+    Page<LuoJiaoyue> selectAll(LuoJiaoyue luoJiaoyue);
 
     /**
      * 导出

@@ -56,12 +56,11 @@ public class LuoJiaoyueServiceImpl extends ServiceImpl<LuoJiaoyueMapper, LuoJiao
     /**
      * 分页查询所有数据
      *
-     * @param page      分页对象
      * @param luoJiaoyue 查询实体
      * @return 所有数据
      */
     @Override
-    public Page<LuoJiaoyue> selectAll(Page<LuoJiaoyue> page, LuoJiaoyue luoJiaoyue) {
+    public Page<LuoJiaoyue> selectAll(LuoJiaoyue luoJiaoyue) {
         LambdaQueryWrapper<LuoJiaoyue> queryWrapper = new LambdaQueryWrapper<LuoJiaoyue>();
         // 根据姓名模糊查询
         queryWrapper.like(ObjectUtil.isNotEmpty(luoJiaoyue.getName()), LuoJiaoyue::getName, luoJiaoyue.getName());
@@ -76,6 +75,9 @@ public class LuoJiaoyueServiceImpl extends ServiceImpl<LuoJiaoyueMapper, LuoJiao
         // 根据 地址，礼金，姓名 排序
         queryWrapper.orderByDesc(LuoJiaoyue::getAddress, LuoJiaoyue::getMoney, LuoJiaoyue::getName);
 
+        Page<LuoJiaoyue> page = new Page<>();
+        page.setCurrent(luoJiaoyue.getCurrent());
+        page.setSize(luoJiaoyue.getSize());
         Page<LuoJiaoyue> list = luoJiaoyueService.page(page, queryWrapper);
 
         return list;
@@ -91,11 +93,10 @@ public class LuoJiaoyueServiceImpl extends ServiceImpl<LuoJiaoyueMapper, LuoJiao
     public void myExport(LuoJiaoyue luoJiaoyue, HttpServletResponse response) throws IOException {
         String fileName = "礼簙信息";
         String sheetName="礼簙信息";
-        Page<LuoJiaoyue> page = new Page<>();
-        page.setCurrent(1);
-        page.setSize(99999);
+        luoJiaoyue.setCurrent(1);
+        luoJiaoyue.setSize(99999);
         List<LiboExcelExport> teacherExcelList = new ArrayList<>();
-        List<LuoJiaoyue> records = luoJiaoyueService.selectAll(page, luoJiaoyue).getRecords();
+        List<LuoJiaoyue> records = luoJiaoyueService.selectAll(luoJiaoyue).getRecords();
         for (LuoJiaoyue record : records) {
             LiboExcelExport liboExcelExport = new LiboExcelExport();
             BeanUtils.copyProperties(record,liboExcelExport);
